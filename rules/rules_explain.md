@@ -1,40 +1,42 @@
+Breaking it down
+
 alert
 
-This tells Suricata what to do when it sees traffic that matches the rule.
+Tells Suricata what to do when it sees traffic that matches the rule.
 
 Here, it will generate an alert.
 
-Other options exist like drop or reject, but those are usually for IPS (Intrusion Prevention System). For NIDS, we just alert.
+Other options exist like drop or reject, but those are usually for IPS. For NIDS, we just use alert.
 
 http
 
-This is the type of traffic the rule looks at.
+The protocol the rule looks at.
 
-Suricata can check lots of traffic types: http, dns, tls, ftp, tcp, udp, etc.
+Suricata supports many protocols: http, dns, tls, ftp, tcp, udp, etc.
 
-Here, it only looks at HTTP traffic.
+This rule only looks at HTTP traffic.
 
 any any -> any any
 
-This shows the source and destination: source IP + port -> destination IP + port.
+Defines source IP & port → destination IP & port.
 
-any any means any IP, any port. So this rule will match all HTTP traffic.
+any any means any IP, any port. The rule will match all HTTP traffic.
 
-You can make it more specific, like your network IP or a particular server port, if you want.
+You can make it more specific (e.g., a specific web server or local network IP).
 
 ( ... )
 
-Everything inside the parentheses are extra options or settings for the rule.
+Everything inside the parentheses are options/settings for the rule:
 
 msg:"DEMO HTTP EvilTest string detected"
 
-The message that will show up when an alert triggers.
+The message that appears in alerts/logs when triggered.
 
 content:"eviltest"
 
-Suricata looks inside the HTTP request for the word "eviltest".
+What Suricata looks for inside the HTTP request.
 
-If it sees it, it triggers the alert.
+If it finds "eviltest", the alert triggers.
 
 sid:1000001
 
@@ -42,8 +44,8 @@ A unique ID for this rule. Each rule must have a different SID.
 
 rev:1
 
-The revision number. If you update the rule later, you can increase this number.
+Revision number. Increment if you update the rule later.
 
 classtype:trojan
 
-This is the type of attack. Optional, but helps categorize alerts for easier analysis.
+The type of attack. Optional, but helps categorize alerts for analysis.
