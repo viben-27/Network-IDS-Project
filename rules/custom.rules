@@ -1,0 +1,1 @@
+alert http any any -> any any (msg:"DEMO HTTP EvilTest string detected"; content:"eviltest"; sid:1000001; rev:1; classtype:trojan;)
