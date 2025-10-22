@@ -1,36 +1,33 @@
-%YAML 1.1
----
-# Minimal Suricata config for NIDS demo project
+default-rule-path: /etc/suricata/rules
 
-# Logging configuration
+rule-files:
+  - local.rules
+  - http-events.rules
+  - dns-events.rules
+  - ssh-events.rules
+
+af-packet:
+  - interface: enp0s8
+    cluster-id: 99
+    cluster-type: cluster_flow
+    defrag: yes
+    use-mmap: yes
+    ring-size: 200000
+    block-size: 1048576
+    copy-mode: tap
+    tso: yes
+
 outputs:
   - eve-log:
       enabled: yes
       filetype: regular
       filename: /var/log/suricata/eve.json
       types:
-        - alert        # Log alerts triggered by rules
-        - http         # Log HTTP requests
-        - dns          # Log DNS queries
-
-# Rule files
-rule-files:
-  - /etc/suricata/rules/custom.rules   # Path to your custom rules
-
-# Network interface to monitor
-af-packet:
-  - interface: eth0     # Change to your network interface
-    cluster-id: 99
-    cluster-type: cluster_flow
-    defrag: yes
-
-# Detection settings
-detect:
-  profile: balanced
-  rule-files:
-    - /etc/suricata/rules/custom.rules
-
-# Default home network (adjust to your IP range)
-vars:
-  address-groups:
-    HOME_NET: "[192.168.1.0/24]"  # Change to your network
+        - alert:
+        - http:
+        - dns:
+        - tls:
+        - flow
+  - fast:
+      enabled: yes
+      filename: /var/log/suricata/fast.log
